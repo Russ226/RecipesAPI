@@ -1,6 +1,7 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
+var connection  =  mongoose.connect("mongodb://localhost/recipe");
 
 const ingredientSchema = new Schema({
 	name: String,
@@ -21,4 +22,4 @@ const recipeSchema = new Schema({
 
 const Recipe = mongoose.model("recipe", recipeSchema);
 
-module.exports = Recipe;
+module.exports = {Recipe, connection};
