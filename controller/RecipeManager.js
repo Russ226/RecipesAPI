@@ -62,15 +62,48 @@ function queryByNameSingle(recipeName, callback){
 	
 }
 
-function quertByNameMultiple(recipeNames, callback){
+function queryByNameMultiple(recipeNames, callback){
 	// try{
-	// 	var results = [];
+	// 	var results = new Set();
+
 	// }finally{
-	// 	recipeName.forEach((recipe)=> {
-	// 		queryByNameSingle(recipe, ()
-	// 	});
+	// 	try{
+	// 		recipeName.forEach((recipe) => {
+	// 			queryByNameSingle(recipe, (result) => {
+	// 				if(result != null){
+	// 					results.add(result);
+	// 				}
+	// 			});
+	// 		});
+	// 	}catch(err){
+	// 		console.log(err);
+
+	// 	}finally{
+	// 		callback(Array.from(results));
+
+	// 	}
+		
+
 	// }
+
+	new Promise((resolve, reject) => {
+		resolve(new Set);
+	}).then((newSet) => {
+		try{
+			recipeNames.forEach((recipe) => {
+				queryByNameSingle(recipe, (result) => {
+					if(result != null){
+						newSet.add(result)
+					}
+				
+				});
+			});
+		}finally{
+			callback(Array.from(newSet));
+		}
+		
+	});
 }
 
 
-module.exports = {insertSingleRecipe, bulkInsertRecipe, queryByNameSingle};
+module.exports = {insertSingleRecipe, bulkInsertRecipe, queryByNameSingle, queryByNameMultiple};
