@@ -1,9 +1,17 @@
 const assert = require('assert');
 const mongoose = require("mongoose");
 const RecipeManager = require("../controller/RecipeManager.js");
+const recipe = require("../model/RecipeModel.js");
 
 
 describe("inserting using functions", function(){
+	beforeEach(function(done){
+		mongoose.connect('mongodb://localhost/recipe',function(){
+    		/* Drop the DB */
+    		mongoose.connection.db.dropDatabase();
+    		done();
+		});
+	});
 	
 	afterEach(function(done){
 		mongoose.connect('mongodb://localhost/recipe',function(){
@@ -52,7 +60,12 @@ describe("inserting using functions", function(){
 		};
 
 		assert(RecipeManager.insertSingleRecipe(newRecipe) === true);
-		done();
+		recipe.Recipe.findOne({name:"Basic Mashed Potatoes"}).then(function(result){
+				assert(result.ingredients.length === 4);
+				done();
+
+		});
+		
 
 	});
 
@@ -130,7 +143,11 @@ describe("inserting using functions", function(){
 
 
 		assert(RecipeManager.bulkInsertRecipe(newRecipes) === true);
-		done();
+		recipe.Recipe.findOne({name:"Basic Mashed Potatoes"}).then(function(result){
+				assert(result.ingredients.length === 4);
+				done();
+
+		});
 
 	});
 
@@ -244,8 +261,12 @@ describe("inserting using functions", function(){
 
 
 		assert(RecipeManager.bulkInsertRecipe(newRecipes) === true);
-		done();
+		recipe.Recipe.findOne({name:"Basic Mashed Potatoes"}).then(function(result){
+				assert(result.ingredients.length === 4);
+				done();
 
+		});
+		
 	});
 
 
