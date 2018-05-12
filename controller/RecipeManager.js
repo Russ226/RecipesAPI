@@ -41,4 +41,36 @@ function bulkInsertRecipe(recipes){
 
 }
 
-module.exports = {insertSingleRecipe, bulkInsertRecipe};
+function queryByNameSingle(recipeName, callback){
+	
+	try{
+		var query = recipe.Recipe.findOne({name : recipeName}).exec();	
+	}finally{
+		
+			query.then((result) => {
+				if(result != null){
+					callback(result);
+
+				}else{
+					callback(null);
+				}
+				
+			});
+				
+		
+	}
+	
+}
+
+function quertByNameMultiple(recipeNames, callback){
+	// try{
+	// 	var results = [];
+	// }finally{
+	// 	recipeName.forEach((recipe)=> {
+	// 		queryByNameSingle(recipe, ()
+	// 	});
+	// }
+}
+
+
+module.exports = {insertSingleRecipe, bulkInsertRecipe, queryByNameSingle};
