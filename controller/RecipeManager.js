@@ -98,4 +98,28 @@ function searchByIngredient(ingredient, callback){
 	});
 }
 
-module.exports = {insertSingleRecipe, bulkInsertRecipe, queryByNameSingle, queryByNameMultiple, searchByIngredient};
+
+/*update fields*/
+
+/*update name*/
+function updateRecipeName(recipeName, newName, callback){
+	new Promise((resolve, reject) => {
+		recipe.Recipe.findOne({name: recipeName}).exec().then((result) => {
+			if(result != null){
+				try{
+					result.name = newName;
+				}finally{
+					result.save((err, success) => {
+						if(err) throw err;
+						callback(true)
+					});
+				}
+				
+			}else{
+				callback(false);
+			}
+		});
+	});
+}
+
+module.exports = {insertSingleRecipe, bulkInsertRecipe, queryByNameSingle, queryByNameMultiple, searchByIngredient, updateRecipeName};
