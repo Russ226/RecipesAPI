@@ -44,29 +44,26 @@ function bulkInsertRecipe(recipes){
 /*recipes name*/
 function queryByNameSingle(recipeName, callback){
 	
-	try{
-		var query = recipe.Recipe.findOne({name : recipeName}).exec();	
-	}finally{
+	
 		
-			query.then((result) => {
-				if(result != null){
-					callback(result);
+	recipe.Recipe.findOne({name : recipeName}).exec().then((result) => {
+		if(result != null){
+			callback(result);
 
-				}else{
-					callback(null);
-				}
-				
-			});
-				
+		}else{
+			callback(null);
+		}
+
+	});
+
 		
-	}
+	
 	
 }
 
-/*stuck with this for now will look into it later*/
+/*still working on this shit ugghhh*/
 function helperMultipleNames(searchItem, callback){
-	// {$regex: ".*" + "Potatoes" +".*"}
-	recipe.Recipe.find({name: {$regex: ".*"+ searchItem +".*"} }).exec().then((searchResult) =>{
+	recipe.Recipe.find({name: '/^'+ searchItem +'/'}).exec().then((searchResult) =>{
 		if(searchResult != null){
 			callback(searchResult);
 		}else{
@@ -75,18 +72,9 @@ function helperMultipleNames(searchItem, callback){
 	});
 }
 
-function queryByNameMultiple(recipeNames, newSet ,callback){
-
-	new Promise((resolve, reject) => {
-		resolve(recipeNames.forEach((recipe) => {
-					helperMultipleNames(recipe, (result)=>{
-						//console.log(result);
-					});
-					
-				}));
-
-	}).then(() =>{
-		callback(Array.from(newSet));
+function queryByNameMultiple(recipeNames,callback){
+	helperMultipleNames(recipeNames, (result)=>{
+		callback(result);
 	});
 }
 
@@ -98,4 +86,129 @@ function searchByIngredient(ingredient, callback){
 	});
 }
 
-module.exports = {insertSingleRecipe, bulkInsertRecipe, queryByNameSingle, queryByNameMultiple, searchByIngredient};
+
+/*update fields*/
+
+/*update name*/
+function updateRecipeName(recipeName, newName, callback){
+	
+	recipe.Recipe.findOne({name: recipeName}).exec().then((result) => {
+		if(result != null){
+			try{
+				result.name = newName;
+			}finally{
+				result.save((err, success) => {
+					if(err) throw err;
+					callback(true)
+				});
+			}
+			
+		}else{
+			callback(false);
+		}
+	});
+	
+}
+
+//update ingredients
+//fuck the mongodb db docs they didnt work =(
+function updateIngredient(recipeName, ingredientToUpdate, field, newUpdate, callback){
+	// try{
+	// 	recipe.Recipe.updateOne({name: recipeName, "ingredients.name": ingredientToUpdate}, {$set: {'ingredients.$.name': "fsdfsd"}});
+	// }finally{
+	// 	callback(true)
+	// }
+	
+	recipe.Recipe.findOne({name: recipeName}).exec().then((result) => {
+		if(result != null){
+			result.ingredients.forEach((ingredient) =>{
+				if(field == 'name'){
+					if(ingredient.name == ingredientToUpdate){
+						try{
+							ingredient.name = newUpdate;
+						}finally{
+							result.save((err, success) => {
+								if(err) throw err;
+								callback(true)
+							});
+						}					
+					}
+				}else if(field == 'amount'){
+					if(ingredient.name == ingredientToUpdate){
+						try{
+							ingredient.amount = newUpdate;
+						}finally{
+							result.save((err, success) => {
+								if(err) throw err;
+								callback(true)
+							});
+						}					
+					}
+				}else if(field == "unit"){
+					if(ingredient.name == ingredientToUpdate){
+						try{
+							ingredient.unit = newUpdate;
+						}finally{
+							result.save((err, success) => {
+								if(err) throw err;
+								callback(true)
+							});
+						}					
+					}
+				}else{
+					callback(false);
+				}
+
+				
+			});
+		
+			
+		}else{
+			callback(false);
+		}
+	});
+		
+}
+
+// update instructions
+function updateinstructions(recipeName, instructionStep, field, newUpdate, callback){
+	recipe.Recipe.findOne({name: recipeName}).exec().then((result) => {
+		if(result != null){
+			result.instructions.forEach((instruction) =>{
+				if(field == stepNumber){
+					if(instruction.stepNumber == instructionStep{
+						try{
+							instruction.stepNumber = newUpdate;
+						}finally{
+							result.save((err, success) => {
+								if(err) throw err;
+								callback(true)
+							});
+						}					
+					}
+				}else if(field == description){
+					if(instruction.description == instructionStep){
+						try{
+							instruction.description = newUpdate;
+						}finally{
+							result.save((err, success) => {
+								if(err) throw err;
+								callback(true)
+							});
+						}					
+					}
+				}else{
+					callback(false);
+				}
+
+				
+			});
+		
+			
+		}else{
+			callback(false);
+		}
+	});
+}
+
+module.exports = {insertSingleRecipe, bulkInsertRecipe, queryByNameSingle, queryByNameMultiple, searchByIngredient, updateRecipeName, updateIngredient};
