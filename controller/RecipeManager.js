@@ -171,12 +171,12 @@ function updateIngredient(recipeName, ingredientToUpdate, field, newUpdate, call
 }
 
 // update instructions
-function updateinstructions(recipeName, instructionStep, field, newUpdate, callback){
+function updateInstructions(recipeName, instructionStep, field, newUpdate, callback){
 	recipe.Recipe.findOne({name: recipeName}).exec().then((result) => {
 		if(result != null){
 			result.instructions.forEach((instruction) =>{
-				if(field == stepNumber){
-					if(instruction.stepNumber == instructionStep{
+				if(field == "stepNumber"){
+					if(instruction.stepNumber == instructionStep){
 						try{
 							instruction.stepNumber = newUpdate;
 						}finally{
@@ -186,8 +186,8 @@ function updateinstructions(recipeName, instructionStep, field, newUpdate, callb
 							});
 						}					
 					}
-				}else if(field == description){
-					if(instruction.description == instructionStep){
+				}else if(field == "description"){
+					if(instruction.stepNumber == instructionStep){
 						try{
 							instruction.description = newUpdate;
 						}finally{
@@ -211,4 +211,4 @@ function updateinstructions(recipeName, instructionStep, field, newUpdate, callb
 	});
 }
 
-module.exports = {insertSingleRecipe, bulkInsertRecipe, queryByNameSingle, queryByNameMultiple, searchByIngredient, updateRecipeName, updateIngredient};
+module.exports = {insertSingleRecipe, bulkInsertRecipe, queryByNameSingle, queryByNameMultiple, searchByIngredient, updateRecipeName, updateIngredient, updateInstructions};
