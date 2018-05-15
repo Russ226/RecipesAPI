@@ -15,7 +15,10 @@ const instructionSchema = new Schema({
 });
 
 const recipeSchema = new Schema({
-	name: String,
+	name: {
+			type: String, 
+			unique: true
+		},
 	ingredients: [ingredientSchema],
 	instructions : [instructionSchema]
 });
