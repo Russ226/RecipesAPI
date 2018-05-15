@@ -70,7 +70,23 @@ describe("querying", function(){
 			RecipeManager.queryByNameSingle(newRecipe1['name'], (callback)=>{
 				try{
 					assert(callback['name'] === newRecipe1['name']);
-					done();
+					new Promise((resolve, reject)=>{
+						try{
+							resolve(RecipeManager.insertSingleRecipe(newRecipe1));
+						}catch(err){
+							done(err);
+						}}).then(() => {
+						RecipeManager.queryByNameSingle("fdsfsdf", (callback)=>{
+						 	try{
+						 		assert(callback === null);
+						 		done();
+						 		
+						 	}catch(err){
+						 		done(err);
+				 			}
+				 	
+						});
+					});
 
 				}catch(err){
 					done(err);
@@ -80,24 +96,7 @@ describe("querying", function(){
 
 		});
 
-		new Promise((resolve, reject)=>{
-			try{
-				resolve(RecipeManager.insertSingleRecipe(newRecipe1));
-			}catch(err){
-				done(err);
-			}
-			
-		}).then(() => {
-			RecipeManager.queryByNameSingle("fdsfsdf", (callback)=>{
-				 	try{
-				 		assert(callback === null);
-				 		
-				 	}catch(err){
-				 		done(err);
-				 	}
-				 	
-				});
-		});
+		
 
 	});
 
@@ -181,17 +180,17 @@ describe("querying", function(){
 			try{
 				resolve(RecipeManager.insertSingleRecipe(newRecipe1));
 			}catch(err){
-				done(err);
+				throw err;
 			}
 			
 		}).then(() => {
 			try{
 				return RecipeManager.insertSingleRecipe(newRecipe2);
 			}catch(err){
-				done(err);
+				throw err;
 			}
 		}).then(() => {
-			RecipeManager.queryByNameMultiple(newRecipe1['name'].split(" "), new Set(),(callback)=>{
+			RecipeManager.queryByNameMultiple(newRecipe1['name'],(callback)=>{
 				
 				try{
 					assert(callback !== null);
@@ -296,7 +295,7 @@ describe("querying", function(){
 			RecipeManager.searchByIngredient("butter", (result) =>{
 				try{
 					assert(result.length != null);
-					done(console.log(result));
+					done();
 				}catch(err){
 					done(err);
 				}
