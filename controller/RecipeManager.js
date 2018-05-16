@@ -211,4 +211,13 @@ function updateInstructions(recipeName, instructionStep, field, newUpdate, callb
 	});
 }
 
-module.exports = {insertSingleRecipe, bulkInsertRecipe, queryByNameSingle, queryByNameMultiple, searchByIngredient, updateRecipeName, updateIngredient, updateInstructions};
+
+//delete
+function deleteByName(recipeName, callback){
+	recipe.Recipe.deleteOne({name: recipeName}).then((result) =>{
+		callback(result);
+	});
+}
+
+
+module.exports = {insertSingleRecipe, bulkInsertRecipe, queryByNameSingle, queryByNameMultiple, searchByIngredient, updateRecipeName, updateIngredient, updateInstructions, deleteByName};

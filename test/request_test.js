@@ -69,7 +69,7 @@ describe("post new recipe request", function(){
 			recipe.Recipe.findOne({name:"Basic Mashed Potatoes"}).then(function(result){
 				try{
 					assert(result['name'] === "Basic Mashed Potatoes");
-					done();
+					done(console.log(res));
 				}catch(err){
 					done()
 				}
@@ -129,6 +129,8 @@ describe("post new recipe request", function(){
 		});
 
 	});
+
+
 
 
 });
