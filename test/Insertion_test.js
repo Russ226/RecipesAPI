@@ -61,8 +61,13 @@ describe("inserting using functions", function(){
 
 		assert(RecipeManager.insertSingleRecipe(newRecipe) === true);
 		recipe.Recipe.findOne({name:"Basic Mashed Potatoes"}).then(function(result){
-				assert(result.ingredients.length === 4);
-				done();
+				try{
+					assert(result.ingredients.length === 4);
+					done();
+
+				}catch(err){
+					done(err);
+				}
 
 		});
 		
@@ -144,8 +149,13 @@ describe("inserting using functions", function(){
 
 		assert(RecipeManager.bulkInsertRecipe(newRecipes) === true);
 		recipe.Recipe.findOne({name:"Basic Mashed Potatoes"}).then(function(result){
-				assert(result.ingredients.length === 4);
-				done();
+				try{
+					assert(result.ingredients.length === 4);
+					done();
+
+				}catch(err){
+					done(err);
+				}
 
 		});
 
@@ -262,8 +272,14 @@ describe("inserting using functions", function(){
 
 		assert(RecipeManager.bulkInsertRecipe(newRecipes) === true);
 		recipe.Recipe.findOne({name:"Basic Mashed Potatoes"}).then(function(result){
-				assert(result.ingredients.length === 4);
-				done();
+				try{
+					assert(result.ingredients.length === 4);
+					done();
+
+				}catch(err){
+					done(err);
+				}
+				
 
 		});
 		
