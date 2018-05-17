@@ -113,12 +113,6 @@ function updateRecipeName(recipeName, newName, callback){
 //update ingredients
 //fuck the mongodb db docs they didnt work =(
 function updateIngredient(recipeName, ingredientToUpdate, field, newUpdate, callback){
-	// try{
-	// 	recipe.Recipe.updateOne({name: recipeName, "ingredients.name": ingredientToUpdate}, {$set: {'ingredients.$.name': "fsdfsd"}});
-	// }finally{
-	// 	callback(true)
-	// }
-	
 	recipe.Recipe.findOne({name: recipeName}).exec().then((result) => {
 		if(result != null){
 			result.ingredients.forEach((ingredient) =>{
