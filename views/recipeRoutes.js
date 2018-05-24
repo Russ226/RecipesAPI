@@ -95,4 +95,11 @@ router.put("/update/instructions/:recipeName/:instructionStep/:field/:newUpdate"
 	});
 });
 
+//delete recipe
+router.delete("/delete/:recipeName". (req, res) => {
+	manager.deleteByName(req.params.recipeName.replace(/%20/g , ' '), (result) => {
+		res.status(200).send({messaage: result});
+	});
+});
+
 module.exports = router;
